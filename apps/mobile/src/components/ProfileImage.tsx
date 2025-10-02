@@ -10,8 +10,8 @@ import { theme } from '../theme';
 
 interface ProfileImageProps {
   imageUrl?: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   borderColor?: string;
   borderWidth?: number;
@@ -79,7 +79,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
           borderRadius: sizeStyles.borderRadius + borderWidth,
           borderWidth,
           borderColor,
-          ...theme.elevation[3],
+          ...theme.elevation.md,
         },
         style,
       ]}
@@ -118,7 +118,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
               },
             ]}
           >
-            {firstName.charAt(0)}{lastName.charAt(0)}
+            {(firstName || 'U').charAt(0)}{(lastName || 'U').charAt(0)}
           </Text>
         </View>
       )}

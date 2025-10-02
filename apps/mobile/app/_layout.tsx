@@ -20,17 +20,13 @@ export default function RootLayout() {
               <Stack.Screen 
                 name="organizations" 
                 options={{ 
-                  title: 'Organizations',
-                  headerShown: true,
-                  headerBackTitle: 'Back'
+                  headerShown: false
                 }} 
               />
               <Stack.Screen 
                 name="create-event" 
                 options={{ 
-                  title: 'Create Event',
-                  headerShown: true,
-                  headerBackTitle: 'Back'
+                  headerShown: false
                 }} 
               />
             </Stack>

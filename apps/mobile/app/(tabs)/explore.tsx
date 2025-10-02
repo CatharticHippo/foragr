@@ -12,9 +12,9 @@ export default function ExploreScreen() {
   const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
 
   const organizations = [
-    { id: '1', name: 'Rocky Mountain Elk Foundation', color: '#059669', logo: '🦌' },
-    { id: '2', name: 'Ecology Project International', color: '#2563EB', logo: '🌱' },
-    { id: '3', name: 'Foster Our Youth', color: '#D97706', logo: '👥' },
+    { id: '1', name: 'Rocky Mountain Elk Foundation', color: '#059669', logo: 'leaf' },
+    { id: '2', name: 'Ecology Project International', color: '#2563EB', logo: 'leaf' },
+    { id: '3', name: 'Foster Our Youth', color: '#D97706', logo: 'people' },
   ];
 
   const opportunities = [
@@ -27,7 +27,7 @@ export default function ExploreScreen() {
       type: 'EVENT',
       coordinate: { latitude: 34.0195, longitude: -118.4912 },
       orgColor: '#2563EB',
-      orgLogo: '🌱',
+      orgLogo: 'leaf',
     },
     {
       id: '2',
@@ -38,7 +38,7 @@ export default function ExploreScreen() {
       type: 'PROJECT',
       coordinate: { latitude: 34.0259, longitude: -118.7798 },
       orgColor: '#059669',
-      orgLogo: '🦌',
+      orgLogo: 'leaf',
     },
     {
       id: '3',
@@ -49,7 +49,7 @@ export default function ExploreScreen() {
       type: 'EVENT',
       coordinate: { latitude: 34.0522, longitude: -118.2437 },
       orgColor: '#D97706',
-      orgLogo: '👥',
+      orgLogo: 'people',
     },
     {
       id: '4',
@@ -60,7 +60,7 @@ export default function ExploreScreen() {
       type: 'EVENT',
       coordinate: { latitude: 33.9850, longitude: -118.4695 },
       orgColor: '#2563EB',
-      orgLogo: '🌱',
+      orgLogo: 'leaf',
     },
     {
       id: '5',
@@ -71,7 +71,7 @@ export default function ExploreScreen() {
       type: 'EVENT',
       coordinate: { latitude: 34.0928, longitude: -118.3287 },
       orgColor: '#D97706',
-      orgLogo: '👥',
+      orgLogo: 'people',
     },
     {
       id: '6',
@@ -82,7 +82,7 @@ export default function ExploreScreen() {
       type: 'FRIENDSHIP_FORAGE',
       coordinate: { latitude: 34.1361, longitude: -118.3000 },
       orgColor: '#10B981',
-      orgLogo: '🤝',
+      orgLogo: 'people',
     },
     {
       id: '7',
@@ -93,7 +93,7 @@ export default function ExploreScreen() {
       type: 'FRIENDSHIP_FORAGE',
       coordinate: { latitude: 34.0867, longitude: -118.2708 },
       orgColor: '#10B981',
-      orgLogo: '🤝',
+      orgLogo: 'people',
     },
   ];
 
@@ -145,22 +145,46 @@ export default function ExploreScreen() {
         <View style={styles.filtersSection}>
           <Text style={styles.sectionTitle}>Organizations</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filtersScroll}>
-            <OrgChip
-              name="All"
-              logo="🌟"
-              size="sm"
-              selected={!selectedOrg}
+            <TouchableOpacity
+              style={[
+                styles.orgChip,
+                { backgroundColor: !selectedOrg ? '#10B981' : '#F3F4F6' }
+              ]}
               onPress={() => setSelectedOrg(null)}
-            />
-            {organizations.map((org) => (
-              <OrgChip
-                key={org.id}
-                name={org.name}
-                logo={org.logo}
-                size="sm"
-                selected={selectedOrg === org.id}
-                onPress={() => setSelectedOrg(org.id)}
+            >
+              <Ionicons 
+                name="star" 
+                size={16} 
+                color={!selectedOrg ? '#FFFFFF' : '#6B7280'} 
               />
+              <Text style={[
+                styles.orgChipText,
+                { color: !selectedOrg ? '#FFFFFF' : '#6B7280' }
+              ]}>
+                All
+              </Text>
+            </TouchableOpacity>
+            {organizations.map((org) => (
+              <TouchableOpacity
+                key={org.id}
+                style={[
+                  styles.orgChip,
+                  { backgroundColor: selectedOrg === org.id ? org.color : '#F3F4F6' }
+                ]}
+                onPress={() => setSelectedOrg(org.id)}
+              >
+                <Ionicons 
+                  name={org.logo as any} 
+                  size={16} 
+                  color={selectedOrg === org.id ? '#FFFFFF' : '#6B7280'} 
+                />
+                <Text style={[
+                  styles.orgChipText,
+                  { color: selectedOrg === org.id ? '#FFFFFF' : '#6B7280' }
+                ]}>
+                  {org.name}
+                </Text>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -189,7 +213,11 @@ export default function ExploreScreen() {
                       pinColor={opportunity.orgColor}
                     >
                       <View style={[styles.customMarker, { backgroundColor: opportunity.orgColor }]}>
-                        <Text style={styles.markerEmoji}>{opportunity.orgLogo}</Text>
+                        <Ionicons 
+                          name={opportunity.orgLogo as any} 
+                          size={20} 
+                          color="#FFFFFF" 
+                        />
                       </View>
                     </Marker>
                   ))}
@@ -232,7 +260,7 @@ export default function ExploreScreen() {
         style={styles.fab} 
         onPress={() => router.push('/create-event')}
       >
-        <Ionicons name="add" size={24} color="#FFFFFF" />
+        <Text style={styles.fabText}>+ Create Event</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -248,10 +276,10 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingVertical: 16,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,
@@ -287,7 +315,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   filtersSection: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
@@ -302,11 +330,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapContainer: {
-    height: 400,
+    height: 500,
     borderRadius: 12,
     overflow: 'hidden',
     marginHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 12,
     ...theme.elevation.sm,
   },
   map: {
@@ -322,8 +350,20 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     ...theme.elevation.sm,
   },
-  markerEmoji: {
-    fontSize: 20,
+  orgChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  orgChipText: {
+    fontSize: 12,
+    fontWeight: '500',
+    marginLeft: 6,
   },
   listContainer: {
     gap: 8,
@@ -374,14 +414,21 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: 100,
-    right: 20,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    bottom: 20,
+    left: '50%',
+    marginLeft: -80, // Half of width to center
+    width: 160,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#10B981',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
     ...theme.elevation.lg,
+  },
+  fabText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

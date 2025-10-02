@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { Card } from '../../src/components/Card';
@@ -9,12 +9,13 @@ import { XPBar } from '../../src/components/XPBar';
 
 export default function ProfileTab() {
   const { user, logout } = useAuth();
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const achievements = [
-    { id: '1', title: 'First Volunteer', description: 'Completed your first volunteer event', icon: '🏆', earned: true },
-    { id: '2', title: 'Community Champion', description: 'Volunteered 10+ hours', icon: '⭐', earned: true },
-    { id: '3', title: 'Eco Warrior', description: 'Participated in 5 environmental events', icon: '🌱', earned: false },
-    { id: '4', title: 'Mentor', description: 'Mentored 3+ youth', icon: '👥', earned: false },
+    { id: '1', title: 'First Volunteer', description: 'Completed your first volunteer event', icon: 'trophy', earned: true },
+    { id: '2', title: 'Community Champion', description: 'Volunteered 10+ hours', icon: 'star', earned: true },
+    { id: '3', title: 'Eco Warrior', description: 'Participated in 5 environmental events', icon: 'leaf', earned: false },
+    { id: '4', title: 'Mentor', description: 'Mentored 3+ youth', icon: 'people', earned: false },
   ];
 
   const recentActivity = [
@@ -25,13 +26,24 @@ export default function ProfileTab() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header with Hamburger Menu */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Profile</Text>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => setIsMenuVisible(true)}
+        >
+          <Ionicons name="menu" size={24} color="#1F2937" />
+        </TouchableOpacity>
+      </View>
+
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         {/* Profile Header */}
         <View style={styles.profileHeader}>
           <ProfileImage 
-            imageUrl={user?.profileImageUrl}
-            firstName={user?.firstName}
-            lastName={user?.lastName}
+            {...(user?.profileImageUrl && { imageUrl: user.profileImageUrl })}
+            {...(user?.firstName && { firstName: user.firstName })}
+            {...(user?.lastName && { lastName: user.lastName })}
             size="xl"
             borderColor="#10B981"
             borderWidth={4}
@@ -94,7 +106,11 @@ export default function ProfileTab() {
                   styles.achievementIcon,
                   { opacity: achievement.earned ? 1 : 0.3 }
                 ]}>
-                  <Text style={styles.achievementEmoji}>{achievement.icon}</Text>
+                  <Ionicons 
+                    name={achievement.icon as any} 
+                    size={24} 
+                    color={achievement.earned ? '#10B981' : '#6B7280'} 
+                  />
                 </View>
                 <View style={styles.achievementContent}>
                   <Text style={[
@@ -137,30 +153,71 @@ export default function ProfileTab() {
           </View>
         </Card>
 
-        {/* Settings */}
-        <Card variant="elevated" padding={4} margin={4}>
-          <Text style={styles.sectionTitle}>Settings</Text>
-          <TouchableOpacity style={styles.settingItem}>
-            <Ionicons name="person-outline" size={20} color="#6B7280" />
-            <Text style={styles.settingText}>Edit Profile</Text>
-            <Ionicons name="chevron-forward" size={20} color="#6B7280" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.settingItem}>
-            <Ionicons name="notifications-outline" size={20} color="#6B7280" />
-            <Text style={styles.settingText}>Notifications</Text>
-            <Ionicons name="chevron-forward" size={20} color="#6B7280" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.settingItem}>
-            <Ionicons name="help-circle-outline" size={20} color="#6B7280" />
-            <Text style={styles.settingText}>Help & Support</Text>
-            <Ionicons name="chevron-forward" size={20} color="#6B7280" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.settingItem, styles.logoutItem]} onPress={logout}>
-            <Ionicons name="log-out-outline" size={20} color="#DC2626" />
-            <Text style={[styles.settingText, styles.logoutText]}>Sign Out</Text>
-          </TouchableOpacity>
-        </Card>
       </ScrollView>
+
+      {/* Settings Menu Modal */}
+      <Modal
+        visible={isMenuVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsMenuVisible(false)}
+      >
+        <Pressable 
+          style={styles.modalOverlay}
+          onPress={() => setIsMenuVisible(false)}
+        >
+          <View style={styles.menuContainer}>
+            <View style={styles.menuHeader}>
+              <Text style={styles.menuTitle}>Settings</Text>
+              <TouchableOpacity 
+                style={styles.closeButton}
+                onPress={() => setIsMenuVisible(false)}
+              >
+                <Ionicons name="close" size={24} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.menuItems}>
+              <TouchableOpacity style={styles.menuItem}>
+                <Ionicons name="person-outline" size={20} color="#6B7280" />
+                <Text style={styles.menuItemText}>Edit Profile</Text>
+                <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.menuItem}>
+                <Ionicons name="notifications-outline" size={20} color="#6B7280" />
+                <Text style={styles.menuItemText}>Notifications</Text>
+                <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.menuItem}>
+                <Ionicons name="help-circle-outline" size={20} color="#6B7280" />
+                <Text style={styles.menuItemText}>Help & Support</Text>
+                <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.menuItem}>
+                <Ionicons name="shield-outline" size={20} color="#6B7280" />
+                <Text style={styles.menuItemText}>Privacy & Security</Text>
+                <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.menuItem}>
+                <Ionicons name="information-circle-outline" size={20} color="#6B7280" />
+                <Text style={styles.menuItemText}>About</Text>
+                <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              
+              <View style={styles.menuDivider} />
+              
+              <TouchableOpacity style={[styles.menuItem, styles.logoutItem]} onPress={logout}>
+                <Ionicons name="log-out-outline" size={20} color="#DC2626" />
+                <Text style={[styles.menuItemText, styles.logoutText]}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -169,6 +226,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9FAFB',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1F2937',
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollView: {
     flex: 1,
@@ -250,9 +330,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  achievementEmoji: {
-    fontSize: 24,
-  },
   achievementContent: {
     flex: 1,
   },
@@ -300,21 +377,64 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#10B981',
   },
-  settingItem: {
+  // Modal and Menu Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  menuContainer: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingBottom: 34, // Safe area for home indicator
+    maxHeight: '80%',
+  },
+  menuHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: '#E5E7EB',
   },
-  settingText: {
+  menuTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuItems: {
+    paddingTop: 8,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  menuItemText: {
     flex: 1,
     fontSize: 16,
     color: '#1F2937',
     marginLeft: 12,
   },
+  menuDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginHorizontal: 20,
+    marginVertical: 8,
+  },
   logoutItem: {
-    borderBottomWidth: 0,
+    // No special styling needed, logout styling is handled by logoutText
   },
   logoutText: {
     color: '#DC2626',

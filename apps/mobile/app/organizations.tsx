@@ -15,7 +15,7 @@ export default function OrganizationsScreen() {
       description: 'Conserving wildlife habitat and promoting hunting heritage',
       category: 'Wildlife Conservation',
       verified: true,
-      logo: '🦌',
+      logo: 'leaf',
       color: '#059669',
       members: 1250,
       events: 45,
@@ -27,7 +27,7 @@ export default function OrganizationsScreen() {
       description: 'Connecting students with nature through hands-on conservation',
       category: 'Environmental Education',
       verified: true,
-      logo: '🌱',
+      logo: 'leaf',
       color: '#2563EB',
       members: 890,
       events: 32,
@@ -39,7 +39,7 @@ export default function OrganizationsScreen() {
       description: 'Supporting foster youth through mentorship and community',
       category: 'Youth Development',
       verified: true,
-      logo: '👥',
+      logo: 'people',
       color: '#D97706',
       members: 2100,
       events: 78,
@@ -51,7 +51,7 @@ export default function OrganizationsScreen() {
       description: 'Building homes, communities, and hope',
       category: 'Housing',
       verified: true,
-      logo: '🏠',
+      logo: 'home',
       color: '#DC2626',
       members: 15000,
       events: 200,
@@ -63,7 +63,7 @@ export default function OrganizationsScreen() {
       description: 'Fighting hunger and feeding hope across America',
       category: 'Food Security',
       verified: true,
-      logo: '🍽️',
+      logo: 'restaurant',
       color: '#7C3AED',
       members: 8500,
       events: 150,
@@ -75,7 +75,7 @@ export default function OrganizationsScreen() {
       description: 'Preventing and alleviating human suffering in emergencies',
       category: 'Disaster Relief',
       verified: true,
-      logo: '🩸',
+      logo: 'medical',
       color: '#DC2626',
       members: 25000,
       events: 300,
@@ -92,6 +92,14 @@ export default function OrganizationsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Organizations</Text>
+          <View style={styles.placeholder} />
+        </View>
 
         {/* Search */}
         <View style={styles.searchContainer}>
@@ -114,7 +122,7 @@ export default function OrganizationsScreen() {
               <TouchableOpacity style={styles.orgItem}>
                 <View style={styles.orgHeader}>
                   <View style={[styles.orgLogo, { backgroundColor: org.color }]}>
-                    <Text style={styles.orgLogoText}>{org.logo}</Text>
+                    <Ionicons name={org.logo as any} size={28} color="#FFFFFF" />
                   </View>
                   <View style={styles.orgInfo}>
                     <View style={styles.orgTitleRow}>
@@ -183,6 +191,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1F2937',
+  },
+  placeholder: {
+    width: 40,
+  },
   searchContainer: {
     marginBottom: 24,
   },
@@ -221,9 +251,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
-  },
-  orgLogoText: {
-    fontSize: 28,
   },
   orgInfo: {
     flex: 1,

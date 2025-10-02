@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useAuth } from '../../src/contexts/AuthContext';
 import { Card } from '../../src/components/Card';
@@ -32,7 +33,7 @@ export default function HomeScreen() {
           <View style={styles.opportunitiesList}>
             <View style={styles.opportunityItem}>
               <View style={styles.opportunityIcon}>
-                <Text style={styles.opportunityEmoji}>🌊</Text>
+                <Ionicons name="water" size={20} color="#10B981" />
               </View>
               <View style={styles.opportunityContent}>
                 <Text style={styles.opportunityTitle}>Beach Cleanup</Text>
@@ -45,7 +46,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.opportunityItem}>
               <View style={styles.opportunityIcon}>
-                <Text style={styles.opportunityEmoji}>🌱</Text>
+                <Ionicons name="leaf" size={20} color="#10B981" />
               </View>
               <View style={styles.opportunityContent}>
                 <Text style={styles.opportunityTitle}>Tree Planting</Text>
@@ -82,14 +83,14 @@ export default function HomeScreen() {
           <View style={styles.actionsRow}>
             <TouchableOpacity style={styles.actionButtonLarge} onPress={() => router.push('/organizations')}>
               <View style={styles.actionIconLarge}>
-                <Text style={styles.actionEmojiLarge}>🏢</Text>
+                <Ionicons name="business" size={32} color="#10B981" />
               </View>
               <Text style={styles.actionTextLarge}>Organizations</Text>
               <Text style={styles.actionSubtext}>Browse verified nonprofits</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButtonLarge} onPress={() => router.push('/create-event')}>
               <View style={styles.actionIconLarge}>
-                <Text style={styles.actionEmojiLarge}>🤝</Text>
+                <Ionicons name="people" size={32} color="#10B981" />
               </View>
               <Text style={styles.actionTextLarge}>Create Event</Text>
               <Text style={styles.actionSubtext}>Start a Friendship Forage</Text>
@@ -101,7 +102,7 @@ export default function HomeScreen() {
           <Text style={styles.cardTitle}>Community Updates</Text>
           <View style={styles.updateItem}>
             <View style={styles.updateIcon}>
-              <Text style={styles.updateEmoji}>🎉</Text>
+              <Ionicons name="trophy" size={20} color="#F59E0B" />
             </View>
             <View style={styles.updateContent}>
               <Text style={styles.updateTitle}>Welcome to the community!</Text>
@@ -209,9 +210,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  opportunityEmoji: {
-    fontSize: 20,
-  },
   opportunityContent: {
     flex: 1,
   },
@@ -258,9 +256,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
-  actionEmojiLarge: {
-    fontSize: 32,
-  },
   actionTextLarge: {
     fontSize: 16,
     fontWeight: '600',
@@ -286,9 +281,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-  },
-  updateEmoji: {
-    fontSize: 20,
   },
   updateContent: {
     flex: 1,
